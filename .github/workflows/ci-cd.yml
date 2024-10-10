@@ -44,7 +44,7 @@ jobs:
     - name: Deploy to Google App Engine
       run: |
         if [ "${{ github.ref }}" == "refs/heads/develop" ]; then
-          gcloud app deploy app.staging.yaml --quiet --project=${{ secrets.PROJECT_ID }} --version=staging
+          gcloud app deploy app.staging.yaml --quiet --project=${{ secrets.PROJECT_ID }} --version=staging-$(date +%Y%m%d%H%M%S)
         elif [ "${{ github.ref }}" == "refs/heads/main" ]; then
-          gcloud app deploy app.yaml --quiet --project=${{ secrets.PROJECT_ID }} --version=production
+          gcloud app deploy app.yaml --quiet --project=${{ secrets.PROJECT_ID }} --version=production-$(date +%Y%m%d%H%M%S)
         fi
