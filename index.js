@@ -1,16 +1,15 @@
 import { createServer } from "node:http";
 
 import { configuration } from "./app/config.js";
+import { app } from "./app/index.js";
+import { connect } from "./app/database.js";
 
-const { port } = configuration.server
+const { port } = configuration.server;
 
-const hostname = "127.0.0.1";
-
-const server = createServer((req, res) => {
-  res.writeHead(200, { "Content-Type": "text/plain" });
-  res.end("Hello World!\n");
-});
+//connect to the database
+connect();
+const server = createServer(app);
 // starts a simple http server locally on port 3000
-server.listen(port, hostname, () => {
-  console.log(`Server runnig at http://${hostname}:${port}/`);
+server.listen(port, () => {
+  console.log(`Server runnig at port ${port}`);
 });

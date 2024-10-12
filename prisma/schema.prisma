@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "cockroachdb"
+  url      = env("DATABASE_URL")
+}
+
+model Group {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  users User[]
+  clients Client[]
+  policies Policy[]
+  InsuranceCompanies InsuranceCompany[]
+}
+
+model User {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  name String 
+  email String @unique
+  password String
+  status String @default("inactive")
+  isAdmin Boolean @default(false)
+  group Group @relation(fields: [groupId], references: [id])
+  groupId String @db.Uuid
+  clients Client[]
+  policies Policy[]
+
+}
+
+model Client {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  name String
+  user User @relation(fields: [userId], references: [id])
+  userId String @db.Uuid
+  group Group @relation(fields: [groupId], references: [id])
+  groupId String @db.Uuid
+}
+
+model Policy {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  name String
+  user User @relation(fields: [userId], references: [id])
+  userId String @db.Uuid
+  group Group @relation(fields: [groupId], references: [id])
+  groupId String @db.Uuid
+}
+
+model InsuranceCompany {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  name String @unique
+  nit String @unique
+  email String @unique
+  address String
+  phone String
+  trade String[]
+  group Group @relation(fields: [groupId], references: [id])
+  groupId String @db.Uuid
+}
