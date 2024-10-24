@@ -8,4 +8,13 @@ export const configuration = {
   server: {
     port: process.env.PORT,
   },
+  pagination: {
+    limit: 25,
+    offset: 0,
+  },
+  order: {
+    options: ['asc', 'desc'],
+    direction: 'desc',
+    orderBy: 'createdAt'
+  }
 };

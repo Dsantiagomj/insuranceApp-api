@@ -7,12 +7,12 @@ export const id = async (req, res, next) => {
   const { id = "" } = params;
 
   try {
-    const data = await prisma.client.findUnique({
+    const data = await prisma.insuranceCompany.findUnique({
       where: { id },
     });
 
     if (data === null) {
-      next({ message: "Client not found", status: 404 });
+      next({ message: "Insurance Company not found", status: 404 });
     } else {
       res.locals.data = data;
       next();
@@ -25,7 +25,7 @@ export const id = async (req, res, next) => {
 export const create = async (req, res, next) => {
   const { body = {} } = req;
   try {
-    const data = await prisma.client.create({ data: body });
+    const data = await prisma.insuranceCompany.create({ data: body });
     res.json({
       data,
     });
@@ -41,12 +41,12 @@ export const getAll = async (req, res, next) => {
 
   try {
     const [data, total] = await Promise.all([
-      prisma.client.findMany({
+      prisma.insuranceCompany.findMany({
         skip: offset,
         take: limit,
         orderBy: { [orderBy]: direction },
       }),
-      prisma.client.count(),
+      prisma.insuranceCompany.count(),
     ]);
 
     res.json({
@@ -78,7 +78,7 @@ export const update = async (req, res, next) => {
   const { id = "" } = params;
 
   try {
-    const data = await prisma.client.update({
+    const data = await prisma.insuranceCompany.update({
       where: { id },
       data: {
         ...body,
@@ -95,7 +95,7 @@ export const remove = async (req, res, next) => {
   const { params = {} } = req;
   const { id = "" } = params;
   try {
-    await prisma.client.delete({
+    await prisma.insuranceCompany.delete({
       where: { id },
     });
     res.status(204).end();

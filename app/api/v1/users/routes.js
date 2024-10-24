@@ -4,11 +4,11 @@ import * as controller from "./controller.js";
 
 export const router = Router();
 /*
- * /api/clients/     POST    - CREATE
- * /api/clients/     GET     - READ ALL
- * /api/clients/:id  GET     - READ ONE
- * /api/clients/:id  PUT     - UPDATE
- * /api/clients/:id  DELETE  - DELETE
+ * /api/users/     POST    - CREATE
+ * /api/users/     GET     - READ ALL
+ * /api/users/:id  GET     - READ ONE
+ * /api/users/:id  PUT     - UPDATE
+ * /api/users/:id  DELETE  - DELETE
  */
 
 router.route("/").post(controller.create).get(controller.getAll);
