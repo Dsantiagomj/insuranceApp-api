@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import * as controller from "./controller.js";
 
-export const router = Router();
+export const router = Router({ mergeParams: true });
 /*
  * /api/insuranceCompanies/     POST    - CREATE
  * /api/insuranceCompanies/     GET     - READ ALL

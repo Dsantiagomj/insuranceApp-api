@@ -1,6 +1,9 @@
 import { Router } from "express";
 
 import * as controller from "./controller.js";
+import { router as insuranceCompaniesRouter } from "../insuranceCompanies/routes.js";
+import { router as policiesRouter } from "../policies/routes.js";
+import { router as clientsRouter } from "../clients/routes.js";
 
 export const router = Router();
 /*
@@ -20,3 +23,7 @@ router
   .get(controller.read)
   .put(controller.update)
   .delete(controller.remove);
+
+router.use("/:groupId/insuranceCompanies", insuranceCompaniesRouter);
+router.use("/:groupId/policies", policiesRouter);
+router.use("/:groupId/clients", clientsRouter);

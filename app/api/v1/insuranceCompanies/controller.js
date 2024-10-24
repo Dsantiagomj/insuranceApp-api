@@ -35,9 +35,10 @@ export const create = async (req, res, next) => {
 };
 
 export const getAll = async (req, res, next) => {
-  const { query = {} } = req;
+  const { query = {}, params = {} } = req;
   const { limit, offset } = parsePaginationParams(query);
   const { orderBy, direction } = parseSortParams({ fields, ...query });
+  const { groupId } = params;
 
   try {
     const [data, total] = await Promise.all([
@@ -45,8 +46,20 @@ export const getAll = async (req, res, next) => {
         skip: offset,
         take: limit,
         orderBy: { [orderBy]: direction },
+        include: {
+          user: {
+            select: {
+              name: true,
+            },
+          },
+        },
+        where: {
+          groupId,
+        },
       }),
-      prisma.insuranceCompany.count(),
+      prisma.insuranceCompany.count({
+        where: { groupId },
+      }),
     ]);
 
     res.json({

@@ -45,6 +45,16 @@ export const getAll = async (req, res, next) => {
         skip: offset,
         take: limit,
         orderBy: { [orderBy]: direction },
+        include: {
+          _count: {
+            slect: {
+              user: true,
+              insuranceCompany: true,
+              client: true,
+              policy: true,
+            },
+          },
+        },
       }),
       prisma.group.count(),
     ]);
