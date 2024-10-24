@@ -9,14 +9,15 @@ generator client {
 }
 
 datasource db {
-  provider = "cockroachdb"
-  url      = env("DATABASE_URL")
+  provider= "cockroachdb"
+  url= env("DATABASE_URL")
 }
 
 model Group {
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+  name String @unique
   users User[]
   clients Client[]
   policies Policy[]
