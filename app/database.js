@@ -18,11 +18,8 @@ export async function getDbUrl() {
 
 export const connect = async function () {
   const dbUrl = await getDbUrl();
-  console.log("Retrieved DATABASE_URL:", dbUrl);
   // Set the DATABASE_URL for Prisma
   process.env.DATABASE_URL = dbUrl;
-  // Optionally log the database URL (for debugging)
-  console.log("DATABASE_URL:", process.env.DATABASE_URL);
   await prisma.$connect();
   console.log("Database connected");
 };

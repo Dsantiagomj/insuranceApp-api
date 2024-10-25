@@ -1,12 +1,14 @@
 import { prisma } from "../../../database.js";
 import { parsePaginationParams, parseSortParams } from "../../../utils.js";
 import { fields } from "./model.js";
+import { connect } from "../../../database.js";
 
 export const id = async (req, res, next) => {
   const { params = {} } = req;
   const { id = "" } = params;
 
   try {
+    await connect();
     const data = await prisma.user.findUnique({
       where: { id },
     });
@@ -25,6 +27,7 @@ export const id = async (req, res, next) => {
 export const create = async (req, res, next) => {
   const { body = {} } = req;
   try {
+    await connect();
     const data = await prisma.user.create({ data: body });
     res.json({
       data,
@@ -40,6 +43,7 @@ export const getAll = async (req, res, next) => {
   const { orderBy, direction } = parseSortParams({ fields, ...query });
 
   try {
+    await connect();
     const [data, total] = await Promise.all([
       prisma.user.findMany({
         skip: offset,
@@ -78,6 +82,7 @@ export const update = async (req, res, next) => {
   const { id = "" } = params;
 
   try {
+    await connect();
     const data = await prisma.user.update({
       where: { id },
       data: {
@@ -95,6 +100,7 @@ export const remove = async (req, res, next) => {
   const { params = {} } = req;
   const { id = "" } = params;
   try {
+    await connect();
     await prisma.user.delete({
       where: { id },
     });

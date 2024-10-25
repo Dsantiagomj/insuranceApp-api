@@ -1,12 +1,14 @@
 import { prisma } from "../../../database.js";
 import { parsePaginationParams, parseSortParams } from "../../../utils.js";
 import { fields } from "./model.js";
+import { connect } from "../../../database.js";
 
 export const id = async (req, res, next) => {
   const { params = {} } = req;
   const { id = "" } = params;
 
   try {
+    await connect();
     const data = await prisma.policy.findUnique({
       where: { id },
     });
@@ -25,6 +27,7 @@ export const id = async (req, res, next) => {
 export const create = async (req, res, next) => {
   const { body = {} } = req;
   try {
+    await connect();
     const data = await prisma.policy.create({ data: body });
     res.json({
       data,
@@ -41,6 +44,7 @@ export const getAll = async (req, res, next) => {
   const { groupId } = params;
 
   try {
+    await connect();
     const [data, total] = await Promise.all([
       prisma.policy.findMany({
         skip: offset,
@@ -91,6 +95,7 @@ export const update = async (req, res, next) => {
   const { id = "" } = params;
 
   try {
+    await connect();
     const data = await prisma.policy.update({
       where: { id },
       data: {
@@ -108,6 +113,7 @@ export const remove = async (req, res, next) => {
   const { params = {} } = req;
   const { id = "" } = params;
   try {
+    await connect();
     await prisma.policy.delete({
       where: { id },
     });

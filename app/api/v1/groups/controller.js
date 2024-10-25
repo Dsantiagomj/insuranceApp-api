@@ -1,12 +1,14 @@
 import { prisma } from "../../../database.js";
 import { parsePaginationParams, parseSortParams } from "../../../utils.js";
 import { fields } from "./model.js";
+import { connect } from "../../../database.js";
 
 export const id = async (req, res, next) => {
   const { params = {} } = req;
   const { id = "" } = params;
 
   try {
+    await connect();
     const data = await prisma.group.findUnique({
       where: { id },
     });
@@ -25,6 +27,7 @@ export const id = async (req, res, next) => {
 export const create = async (req, res, next) => {
   const { body = {} } = req;
   try {
+    await connect();
     const data = await prisma.group.create({ data: body });
     res.json({
       data,
@@ -40,6 +43,7 @@ export const getAll = async (req, res, next) => {
   const { orderBy, direction } = parseSortParams({ fields, ...query });
 
   try {
+    await connect();
     const [data, total] = await Promise.all([
       prisma.group.findMany({
         skip: offset,
@@ -47,7 +51,7 @@ export const getAll = async (req, res, next) => {
         orderBy: { [orderBy]: direction },
         include: {
           _count: {
-            slect: {
+            select: {
               user: true,
               insuranceCompany: true,
               client: true,
@@ -88,6 +92,7 @@ export const update = async (req, res, next) => {
   const { id = "" } = params;
 
   try {
+    await connect();
     const data = await prisma.group.update({
       where: { id },
       data: {
@@ -105,6 +110,7 @@ export const remove = async (req, res, next) => {
   const { params = {} } = req;
   const { id = "" } = params;
   try {
+    await connect();
     await prisma.group.delete({
       where: { id },
     });
