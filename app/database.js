@@ -17,11 +17,16 @@ export async function getDbUrl() {
 }
 
 export const connect = async function () {
-  const dbUrl = await getDbUrl();
-  // Set the DATABASE_URL for Prisma
-  process.env.DATABASE_URL = dbUrl;
-  await prisma.$connect();
-  console.log("Database connected");
+  try {
+    const dbUrl = await getDbUrl();
+    // Set the DATABASE_URL for Prisma
+    process.env.DATABASE_URL = dbUrl;
+    console.log("DATABASE_URL set to:", process.env.DATABASE_URL);
+    await prisma.$connect();
+    console.log("Database connected");
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const disconnect = async function () {
